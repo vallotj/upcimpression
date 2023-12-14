@@ -105,12 +105,16 @@ class ActionsUPCImpression
 ?>
             <script type="text/javascript">
                 $('#buttonprint').attr("onclick", "UPCTakePosPriceTTC(<?php echo $object->id ?>)");
+
                 function UPCTakePosPriceTTC(id){
                     console.log("UPC DolibarrTakeposPrinting Printing invoice ticket " + id)
-                    $.ajax({
-                        type: "GET",
-                        data: { token: '<?php echo currentToken(); ?>' },
-                        url: "<?php print DOL_URL_ROOT."/custom/upcimpression/ajax/ajax.php?action=printinvoiceticket&token=".newToken()."&term=".urlencode(isset($_SESSION["takeposterminal"]) ? $_SESSION["takeposterminal"] : "ww")."&id="; ?>" + id,
+                    $.get("<?php echo DOL_URL_ROOT; ?>/custom/upcimpression/ajax/ajax.php?action=printinvoiceticket&token=<?php echo newToken(); ?>&term=<?php echo urlencode(isset($_SESSION["takeposterminal"]) ? $_SESSION["takeposterminal"] : ''); ?>&id="+id+"&token=<?php echo currentToken(); ?>",
+                        function(data, status) {
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php print getDolGlobalString('TAKEPOS_PRINT_SERVER'); ?>/printer/index.php',
+                            data: 'invoice='+data
+                        });
                     });
                 }
             </script>

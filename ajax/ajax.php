@@ -42,6 +42,7 @@ require '../../../main.inc.php'; // Load $user and permissions
 require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT."/product/class/product.class.php";
 
+
 $category = GETPOST('category', 'alphanohtml');	// Can be id of category or 'supplements'
 $action = GETPOST('action', 'aZ09');
 $term = GETPOST('term', 'alpha');
@@ -50,6 +51,7 @@ $search_start = GETPOST('search_start', 'int');
 $search_limit = GETPOST('search_limit', 'int');
 
 if (empty($user->rights->takepos->run)) {
+    dol_syslog('UPCIMPRESSION: ACCESS FORBIDDEN');
 	accessforbidden();
 }
 
@@ -347,6 +349,7 @@ if ($action == 'getProducts') {
 		$printer->close();
 	}
 } elseif ($action == "printinvoiceticket" && $term != '' && $id > 0 && !empty($user->rights->facture->lire)) {
+    dol_syslog('UPCIMPRESSION: PRINT INVOICE TICKET ');
 	require_once DOL_DOCUMENT_ROOT.'/custom/upcimpression/class/dolreceiptprinter.class.php';
 	require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
 	$printer = new dolReceiptPrinter($db);
@@ -355,7 +358,6 @@ if ($action == 'getProducts') {
 		$object = new Facture($db);
 		$object->fetch($id);
 		$ret = $printer->sendToPrinter($object, getDolGlobalString('TAKEPOS_TEMPLATE_TO_USE_FOR_INVOICES'.$term), getDolGlobalString('TAKEPOS_PRINTER_TO_USE'.$term));
-        echo json_encode($ret);
 	}
 } elseif ($action == 'getInvoice') {
 	top_httphead('application/json');

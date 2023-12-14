@@ -667,7 +667,7 @@ class dolReceiptPrinter extends Printer
 					case 'DOL_PRINT_OBJECT_LINES':
 						foreach ($object->lines as $line) {
 							if ($line->fk_product) {
-								$spacestoadd = $nbcharactbyline - strlen($line->ref) - strlen($line->qty) - strlen($line->subprice) - 10 - 1;
+                                $spacestoadd = $nbcharactbyline - strlen(strip_tags(htmlspecialchars_decode($line->product_label))) - strlen($line->qty) - strlen($line->subprice) - 10 - 1;
 								$spaces = str_repeat(' ', $spacestoadd > 0 ? $spacestoadd : 0);
                                 $this->printer->text(strip_tags(htmlspecialchars_decode($line->product_label)) . $spaces . $line->qty . str_pad(price(number_format($line->subprice + ($line->subprice * ($line->tva_tx / 100)), 2)), 10, ' ', STR_PAD_LEFT) . ' ' . str_pad(price($line->total_ttc), 10, ' ', STR_PAD_LEFT) . "\n \n");
 							} else {
