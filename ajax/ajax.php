@@ -350,7 +350,7 @@ if ($action == 'getProducts') {
 	}
 } elseif ($action == "printinvoiceticket" && $term != '' && $id > 0 && !empty($user->rights->facture->lire)) {
     dol_syslog('UPCIMPRESSION: PRINT INVOICE TICKET ');
-	require_once DOL_DOCUMENT_ROOT.'/custom/upcimpression/class/dolreceiptprinter.class.php';
+	require_once DOL_DOCUMENT_ROOT.'/custom/upcimpression/class/dolReceiptPrinter.class.php';
 	require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
 	$printer = new dolReceiptPrinter($db);
 	// check printer for terminal
