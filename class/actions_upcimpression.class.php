@@ -102,7 +102,14 @@ class ActionsUPCImpression
         global $conf, $user, $langs, $db;
 
         if (in_array($parameters['currentcontext'], array('takeposinvoice'))) {
+
+            if ($action == 'history') {
+                $placeid = (int) GETPOST('placeid', 'int');
+                $object->id = $placeid;
+            }
 ?>
+
+
             <script type="text/javascript">
                 $('#buttonprint').attr("onclick", "UPCTakePosPriceTTC(<?php echo $object->id ?>)");
 
